@@ -225,8 +225,37 @@ func demo4(){
 
 //MARK: - Demo 5:
 
-func demo5(){
+struct ExcelNumber {
     
+    static let supportedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    static let radix = supportedCharacters.count
+    
+    let value: String
+    
+    func toInt() -> Int {
+        var result = 0
+        for item in value.enumerated() {
+            
+            let supported = Self.supportedCharacters
+            let charIntex = supported.firstIndex(of: item.element)!
+            let charValue = supported.distance(from: supported.startIndex, to: charIntex) + 1
+            
+            result += charValue
+        }
+        return result
+    }
+    
+    init?(_ value: String) {
+        guard value.allSatisfy({ Self.supportedCharacters.contains($0) }) else { return nil }
+        self.value = value
+    }
+}
+
+func demo5(){
+
+    let excelRows = ["A","B","C","Z","AA","AB","AAA","BAB"].compactMap{ ExcelNumber($0) }
+    excelRows.forEach{ print("\($0.value) -> \($0.toInt())") }
+
 }
 
 //MARK: - Demo 6:
@@ -281,6 +310,28 @@ func demo6(){
 //MARK: - Demo 7:
 func demo7(){
     
+    func printDistance(from: String, to: String) {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        
+        guard let fromDate = formatter.date(from: from),
+              let toDate = formatter.date(from: to)
+            else {
+            fatalError("Wrong date format")
+        }
+        
+        let distanceInMinutes = abs(fromDate.distance(to: toDate)) / 60
+        print("Distance between \(from) and \(to) == \(distanceInMinutes) minutes")
+    }
+    
+    let firstTest  = (from:"13:45",to: "12:45")
+    let secondTest = (from:"13:45",to: "14:00")
+    
+    printDistance(from: firstTest.from, to: firstTest.to)
+    print("---")
+    printDistance(from: secondTest.from, to: secondTest.to)
+    
 }
 
 //MARK: - Demo 8:
@@ -297,5 +348,5 @@ let tasks: [() -> Void] = [demo1,demo2,demo3,demo4,demo5,demo6,demo7,demo8]
 //    item.element()
 //}
 
-tasks[3]()
+tasks[6]()
 
