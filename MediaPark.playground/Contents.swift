@@ -1,4 +1,5 @@
-import UIKit
+
+import Foundation
 
 //MARK: - Demo 1:
 
@@ -89,12 +90,6 @@ extension Shop.WorkSchedule {
     }
 }
 
-///Task 1
-///
-///We have theoretical shop object with working hours for each day. Demo object structure is provided below, image if this is the data we received from BE and we have to work with it. “WorkHours” is optional because if it is that means shop is not working that day, otherwise we would have some formatted date, like “10:00", “16:30”, etc...
-///Your main task is to display shops working hours sorted by weekdays and time.
-///If several days in succession have exact same time, those days should be grouped together (Monday-Wednesday in the example below).
-///If shop is closed then instead of time show “Closed”
 func demo1(){
 
     func showWorkHours(for shop: Shop){
@@ -169,23 +164,70 @@ func demo1(){
         print(error)
     }
 }
+
 //MARK: - Demo 2:
 
 func demo2(){
-    let texts = ["two","twelve","twenty"]
     
-    let commonPrefix = texts.reduce(texts.first!) { result, nextText in
-        result.commonPrefix(with: nextText)
+    func printCommonPrefix(for texts: [String]){
+        let commonPrefix = texts.reduce(texts.first!) { result, nextText in
+            result.commonPrefix(with: nextText)
+        }
+        print("\"\(commonPrefix)\" is a common prefix for: \(texts)")
     }
     
-    print("\"\(commonPrefix)\" is a common prefix for: \(texts)")
-    
+    printCommonPrefix(for: ["market", "maxima", "mama"])
+    printCommonPrefix(for: ["sale", "safe", "sun"])
 }
+
 //MARK: - Demo 3:
+
+func demo3(){
+    
+    func getLastWordCharacterCount(from text: String) -> Int {
+        text.split(separator: " ").last?.count ?? 0
+    }
+
+    let text = "Today is sunny"
+    let count = getLastWordCharacterCount(from: text)
+
+    print("In \"\(text)\" last word character count is \(count)")
+}
 
 //MARK: - Demo 4:
 
+extension Array where Self.Element: Equatable {
+    
+    // I would implement like Array(Set(<sequence>)) but Set cannot be used in our case.
+    mutating func removeDuplicates() {
+        var copy = self
+        var uniqueElements = [Element]()
+        
+        while copy.count > 0 {
+            let uniqueElement = copy.first!
+            copy.removeAll(where: { $0 == uniqueElement})
+            uniqueElements.append(uniqueElement)
+        }
+        
+        self = uniqueElements
+    }
+}
+
+func demo4(){
+    
+    var items = [1,1,3,4,5,5]
+    
+    print("Before removing duplicates : \(items.sorted())")
+    items.removeDuplicates()
+    print("After removing duplicates : \(items.sorted())")
+    
+}
+
 //MARK: - Demo 5:
+
+func demo5(){
+    
+}
 
 //MARK: - Demo 6:
 
@@ -231,20 +273,29 @@ extension Int {
     }
 }
 
-///Task 6
-///
-///Integer to Roman number converter. Write a function that takes an Int as parameter and returns Roman number.
 func demo6(){
     let numbers = [1, 5, 7, 16, 32, 88, 121, 1000, 2020]
     numbers.forEach{ print("\($0) : \($0.asRomanString())") }
 }
 
 //MARK: - Demo 7:
+func demo7(){
+    
+}
 
 //MARK: - Demo 8:
+func demo8(){
+    
+}
 
 //MARK: - MAIN
 
-let tasks: [() -> Void] = [demo1,demo2,demo6]
+let tasks: [() -> Void] = [demo1,demo2,demo3,demo4,demo5,demo6,demo7,demo8]
 
-tasks[1]()
+//tasks.enumerated().forEach { item in
+//    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
+//    item.element()
+//}
+
+tasks[3]()
+
