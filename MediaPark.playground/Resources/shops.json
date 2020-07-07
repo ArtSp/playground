@@ -1,0 +1,123 @@
+[
+  {
+    "name" : "Maxima",
+    "adress" : "Rīga",
+    "workSchedule" : {
+      "sunday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "monday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "friday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "tuesday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "thursday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "saturay" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "wednesday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      }
+    }
+  },
+    {
+    "name" : "Rimi",
+    "adress" : "Rīga",
+    "workSchedule" : {
+      "monday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "friday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "tuesday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "thursday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "wednesday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      }
+    }
+  },
+    {
+    "name" : "Narvesen",
+    "adress" : "Rīga",
+    "workSchedule" : {
+      "sunday" : {
+        "to" : "18:00",
+        "from" : "08:00"
+      },
+      "monday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "friday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "tuesday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "thursday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      },
+      "saturay" : {
+        "to" : "18:00",
+        "from" : "08:00"
+      },
+      "wednesday" : {
+        "to" : "21:00",
+        "from" : "08:00"
+      }
+    }
+  },
+    {
+    "name" : "Maxima Mini",
+    "adress" : "Vilnus",
+    "workSchedule" : {
+
+      "monday" : {
+        "to" : "20:00",
+        "from" : "08:00"
+      },
+      "friday" : {
+        "to" : "18:00",
+        "from" : "09:00"
+      },
+      "tuesday" : {
+        "to" : "20:00",
+        "from" : "08:00"
+      },
+      "thursday" : {
+        "to" : "18:00",
+        "from" : "09:00"
+      },
+      "wednesday" : {
+        "to" : "20:00",
+        "from" : "08:00"
+      }
+    }
+  }
+]
