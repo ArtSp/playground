@@ -2,6 +2,80 @@
 import Foundation
 
 //MARK: - Demo 1:
+func demo1(){
+
+    func showWorkHours(for shop: Shop){
+        
+        let schedulesMap = shop.workSchedule.toDictionary()
+        var sortedSchedules = [WeekDayInterval:WorkHours?]()
+        
+        func getDayRanges(for hours: WorkHours?) -> [WeekDayInterval]{
+            
+            var intervals = [WeekDayInterval]()
+            
+            var keys = schedulesMap.filter { _, workHours in
+                workHours == hours
+            }.keys.sorted(by: < )
+            
+            while keys.count > 0 {
+                let start = keys.first!
+                var end = start
+                for key in keys {
+                    switch end.distanceTo(key) {
+                    case 1:
+                        end = key
+                    case let (i) where i > 1:
+                        break
+                    default:
+                        continue
+                    }
+                }
+                
+                keys.removeFirst(start.distanceTo(end) + 1)
+                intervals.append(WeekDayInterval(start: start, end: end))
+            }
+            
+            return intervals
+            
+        }
+        
+        func printSchedule(_ schedule: WeekDayInterval){
+            
+            var scheduleRangeString: String {
+                schedule.start.distanceTo(schedule.end) < 1 ? schedule.start.romanString :
+                    String(format: "%@-%@",arguments: [schedule.start.romanString,schedule.end.romanString] )
+            }
+            
+            var workHoursRangeString: String {
+            
+                guard let hours = sortedSchedules[schedule]! else { return "Closed" }
+                return String(format: "%@-%@",arguments: [hours.from,hours.to] )
+            }
+            
+            print("\(scheduleRangeString)\t\(workHoursRangeString)")
+        }
+        
+        for workHours in shop.workSchedule.toList(removeDuplicates: true){
+            getDayRanges(for: workHours).forEach{ sortedSchedules[$0] = workHours }
+        }
+
+        print("\(shop.name) (\(shop.adress))\n")
+        sortedSchedules.keys.sorted(by: <).forEach{ printSchedule($0) }
+        print("\n---***---\n")
+    }
+    
+    do {
+        let filePath = Bundle.main.path(forResource: "shops", ofType: "json")!
+        let fileData = FileManager.default.contents(atPath: filePath)!
+
+        let shops = try JSONDecoder().decode([Shop].self, from: fileData)
+        
+        shops.forEach{ showWorkHours(for: $0) }
+        
+    } catch {
+        print(error)
+    }
+}
 
 struct WeekDayInterval: Hashable, Comparable {
     
@@ -90,83 +164,7 @@ extension Shop.WorkSchedule {
     }
 }
 
-func demo1(){
-
-    func showWorkHours(for shop: Shop){
-        
-        let schedulesMap = shop.workSchedule.toDictionary()
-        var sortedSchedules = [WeekDayInterval:WorkHours?]()
-        
-        func getDayRanges(for hours: WorkHours?) -> [WeekDayInterval]{
-            
-            var intervals = [WeekDayInterval]()
-            
-            var keys = schedulesMap.filter { _, workHours in
-                workHours == hours
-            }.keys.sorted(by: < )
-            
-            while keys.count > 0 {
-                let start = keys.first!
-                var end = start
-                for key in keys {
-                    switch end.distanceTo(key) {
-                    case 1:
-                        end = key
-                    case let (i) where i > 1:
-                        break
-                    default:
-                        continue
-                    }
-                }
-                
-                keys.removeFirst(start.distanceTo(end) + 1)
-                intervals.append(WeekDayInterval(start: start, end: end))
-            }
-            
-            return intervals
-            
-        }
-        
-        func printSchedule(_ schedule: WeekDayInterval){
-            
-            var scheduleRangeString: String {
-                schedule.start.distanceTo(schedule.end) < 1 ? schedule.start.romanString :
-                    String(format: "%@-%@",arguments: [schedule.start.romanString,schedule.end.romanString] )
-            }
-            
-            var workHoursRangeString: String {
-            
-                guard let hours = sortedSchedules[schedule]! else { return "Closed" }
-                return String(format: "%@-%@",arguments: [hours.from,hours.to] )
-            }
-            
-            print("\(scheduleRangeString)\t\(workHoursRangeString)")
-        }
-        
-        for workHours in shop.workSchedule.toList(removeDuplicates: true){
-            getDayRanges(for: workHours).forEach{ sortedSchedules[$0] = workHours }
-        }
-
-        print("\(shop.name) (\(shop.adress))\n")
-        sortedSchedules.keys.sorted(by: <).forEach{ printSchedule($0) }
-        print("\n---***---\n")
-    }
-    
-    do {
-        let filePath = Bundle.main.path(forResource: "shops", ofType: "json")!
-        let fileData = FileManager.default.contents(atPath: filePath)!
-
-        let shops = try JSONDecoder().decode([Shop].self, from: fileData)
-        
-        shops.forEach{ showWorkHours(for: $0) }
-        
-    } catch {
-        print(error)
-    }
-}
-
 //MARK: - Demo 2:
-
 func demo2(){
     
     func printCommonPrefix(for texts: [String]){
@@ -181,7 +179,6 @@ func demo2(){
 }
 
 //MARK: - Demo 3:
-
 func demo3(){
     
     func getLastWordCharacterCount(from text: String) -> Int {
@@ -195,6 +192,15 @@ func demo3(){
 }
 
 //MARK: - Demo 4:
+func demo4(){
+    
+    var items = [1,1,3,4,5,5]
+    
+    print("Before removing duplicates : \(items.sorted())")
+    items.removeDuplicates()
+    print("After removing duplicates : \(items.sorted())")
+    
+}
 
 extension Array where Self.Element: Equatable {
     
@@ -213,17 +219,11 @@ extension Array where Self.Element: Equatable {
     }
 }
 
-func demo4(){
-    
-    var items = [1,1,3,4,5,5]
-    
-    print("Before removing duplicates : \(items.sorted())")
-    items.removeDuplicates()
-    print("After removing duplicates : \(items.sorted())")
-    
-}
-
 //MARK: - Demo 5:
+func demo5(){
+    let excelRows = ["A","B","C","Z","AA","AB","ABC","BAB"].compactMap{ ExcelNumber($0) }
+    excelRows.forEach{ print("\($0.value) -> \($0.toInt())") }
+}
 
 struct ExcelNumber {
     
@@ -234,13 +234,14 @@ struct ExcelNumber {
     
     func toInt() -> Int {
         var result = 0
-        for item in value.enumerated() {
+        for item in value.reversed().enumerated() {
             
             let supported = Self.supportedCharacters
-            let charIntex = supported.firstIndex(of: item.element)!
-            let charValue = supported.distance(from: supported.startIndex, to: charIntex) + 1
+            let charIndex = supported.firstIndex(of: item.element)!
+            let charValue = supported.distance(from: supported.startIndex, to: charIndex) + 1
             
-            result += charValue
+            result += Int(pow(Double(Self.radix), Double(item.offset))) * charValue
+       
         }
         return result
     }
@@ -251,14 +252,11 @@ struct ExcelNumber {
     }
 }
 
-func demo5(){
-
-    let excelRows = ["A","B","C","Z","AA","AB","AAA","BAB"].compactMap{ ExcelNumber($0) }
-    excelRows.forEach{ print("\($0.value) -> \($0.toInt())") }
-
-}
-
 //MARK: - Demo 6:
+func demo6(){
+    let numbers = [1, 5, 7, 16, 32, 88, 121, 1000, 2020]
+    numbers.forEach{ print("\($0) : \($0.asRomanString())") }
+}
 
 enum RomanNumber: String, CaseIterable {
     case M, CM, D, CD, C, XC, L, XL, X, IX, V, IV, I
@@ -300,11 +298,6 @@ extension Int {
         
         return roman
     }
-}
-
-func demo6(){
-    let numbers = [1, 5, 7, 16, 32, 88, 121, 1000, 2020]
-    numbers.forEach{ print("\($0) : \($0.asRomanString())") }
 }
 
 //MARK: - Demo 7:
@@ -386,14 +379,13 @@ func demo8(){
     print("Earned Total: \(proceedInvestment(stock: testCase2))")
 }
 
-//MARK: - MAIN
-
+//MARK: - Main
 let tasks: [() -> Void] = [demo1,demo2,demo3,demo4,demo5,demo6,demo7,demo8]
 
-tasks.enumerated().forEach { item in
-    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
-    item.element()
-}
+//tasks.enumerated().forEach { item in
+//    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
+//    item.element()
+//}
 
-//tasks[7]()
+tasks[4]()
 
