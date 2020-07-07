@@ -171,6 +171,16 @@ func demo1(){
 }
 //MARK: - Demo 2:
 
+func demo2(){
+    let texts = ["two","twelve","twenty"]
+    
+    let commonPrefix = texts.reduce(texts.first!) { result, nextText in
+        result.commonPrefix(with: nextText)
+    }
+    
+    print("\"\(commonPrefix)\" is a common prefix for: \(texts)")
+    
+}
 //MARK: - Demo 3:
 
 //MARK: - Demo 4:
@@ -235,6 +245,6 @@ func demo6(){
 
 //MARK: - MAIN
 
-let tasks: [()-> Void] = [demo1,demo6]
+let tasks: [() -> Void] = [demo1,demo2,demo6]
 
-tasks[0]()
+tasks[1]()
