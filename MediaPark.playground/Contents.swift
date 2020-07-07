@@ -337,16 +337,63 @@ func demo7(){
 //MARK: - Demo 8:
 func demo8(){
     
+    func proceedInvestment(stock: [Int]) -> Int {
+        
+        var earned = 0
+        var purchasedStock: Int?
+        
+        func sell(for sellPrice: Int){
+            guard let purchasePrice = purchasedStock else { fatalError("Nothing to sell") }
+            let transactionEarn = sellPrice - purchasePrice
+            earned += transactionEarn
+            purchasedStock = nil
+            print("Purchased for:\(purchasePrice), Sold for:\(sellPrice), Earned: \(transactionEarn)")
+        }
+        
+        func buy(_ investment: Int){
+            guard purchasedStock == nil else { fatalError("Should sell before buy") }
+            purchasedStock = investment
+        }
+        
+        var stock = stock
+        while !stock.isEmpty {
+            
+            let investment = stock.remove(at: 0)
+            
+            var shouldInvest: Bool {
+                guard stock.count > 0 else {return false}
+                return investment < stock[0]
+            }
+            
+            if let _ = purchasedStock {
+                if !shouldInvest { sell(for: investment) }
+            } else {
+                if shouldInvest { buy(investment) }
+            }
+            
+        }
+        
+        return earned
+    }
+    
+    let testCase1 = [1, 4, 5, 6, 2, 8]
+    let testCase2 = [6, 3, 3, 6, 2, 9, 1]
+    
+    print("Stock: \(testCase1)")
+    print("Earned Total: \(proceedInvestment(stock: testCase1))")
+    print("---")
+    print("Stock: \(testCase2)")
+    print("Earned Total: \(proceedInvestment(stock: testCase2))")
 }
 
 //MARK: - MAIN
 
 let tasks: [() -> Void] = [demo1,demo2,demo3,demo4,demo5,demo6,demo7,demo8]
 
-//tasks.enumerated().forEach { item in
-//    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
-//    item.element()
-//}
+tasks.enumerated().forEach { item in
+    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
+    item.element()
+}
 
-tasks[6]()
+//tasks[7]()
 
