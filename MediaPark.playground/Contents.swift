@@ -382,10 +382,8 @@ func demo8(){
 //MARK: - Main
 let tasks: [() -> Void] = [demo1,demo2,demo3,demo4,demo5,demo6,demo7,demo8]
 
-//tasks.enumerated().forEach { item in
-//    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
-//    item.element()
-//}
-
-tasks[4]()
+tasks.enumerated().forEach { item in
+    print( "\n\n\nCase \(item.offset + 1) ------------------------------\n\n\n")
+    item.element()
+}
 
